@@ -1,0 +1,107 @@
+$red: rgb(243, 52, 52);
+$stick-width: 15px;
+$stick-height: 5px;
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    height: 90vh;
+
+    width: 90%;
+    margin: auto;
+
+    &__parent {
+        flex-basis: 70%;
+    }
+
+    &__form {
+        flex-basis: 30%;
+    }
+}
+
+.parent {
+    border: 1px black solid;
+    height: 100%;
+
+    position: relative;
+}
+
+.block {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+
+    width: 50px;
+    height: 50px;
+    background-color: rgb(74, 245, 74);
+
+    &__dot {
+        width: 8px;
+        height: 8px;
+        background-color: $red;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    &__stick {
+        position: absolute;
+        background-color: $red;
+    }
+
+    &__stick--left {
+        width: $stick-height;
+        height: $stick-width;
+        top: 50%;
+        left: 0;
+        transform: translate(-50%, -50%);
+    }
+
+    &__stick--top {
+        width: $stick-width;
+        height: $stick-height;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    &__stick--right {
+        width: $stick-height;
+        height: $stick-width;
+        top: 50%;
+        right: 0;
+        transform: translate(50%, -50%);
+    }
+
+    &__stick--bottom {
+        width: $stick-width;
+        height: $stick-height;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%, 50%);
+    }
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    &__group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
