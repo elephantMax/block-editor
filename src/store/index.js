@@ -5,10 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    top: 50,
-    left: 20,
-    height: 50,
-    width: 50,
+    top: 100,
+    left: 100,
+    height: 100,
+    width: 100,
     parentTop: null,
     parentLeft: null,
     parentWidth: null,

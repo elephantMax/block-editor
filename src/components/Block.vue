@@ -2,18 +2,42 @@
   <div
     class="block"
     :style="{ width, height, top, left }"
-    @mouseover="mouseOver = true"
+    @mouseover="mouseOverDot = true"
     @mousemove="dotHandler"
-    @mouseleave="mouseLeaveHandler"
   >
-    <span class="block__stick block__stick--top"></span>
-    <span class="block__stick block__stick--left"></span>
-    <span class="block__stick block__stick--right"></span>
-    <span class="block__stick block__stick--bottom"></span>
+    <span
+      class="block__stick block__stick--top"
+      @mousemove.stop="resize('top', $event)"
+      @mousedown.stop="mouseDownStickHandler"
+      @mouseup="mouseDownStick = false"
+      @mouseleave="mouseDownStick = false"
+    >
+    </span>
+    <span
+      class="block__stick block__stick--left"
+      @mousemove.stop="resize('left', $event)"
+      @mousedown.stop="mouseDownStickHandler"
+      @mouseup="mouseDownStick = false"
+      @mouseleave="mouseDownStick = false"
+    ></span>
+    <span
+      class="block__stick block__stick--right"
+      @mousemove.stop="resize('right', $event)"
+      @mousedown.stop="mouseDownStickHandler"
+      @mouseup="mouseDownStick = false"
+      @mouseleave="mouseDownStick = false"
+    ></span>
+    <span
+      class="block__stick block__stick--bottom"
+      @mousemove.stop="resize('bot', $event)"
+      @mousedown.stop="mouseDownStickHandler"
+      @mouseup="mouseDownStick = false"
+      @mouseleave="mouseDownStick = false"
+    ></span>
     <span
       class="block__dot"
-      @mousedown="mouseDownHandler"
-      @mouseup="mouseDown = false"
+      @mousedown="mouseDownDotHandler"
+      @mouseup="mouseDownDot = false"
     ></span>
   </div>
 </template>
@@ -24,22 +48,24 @@ export default {
   props: ["parentData"],
   data() {
     return {
-      mouseOver: false,
-      mouseDown: false,
+      mouseOverDot: false,
+      mouseDownDot: false,
+      mouseOverStick: false,
+      mouseDownStick: false,
     };
   },
   methods: {
-    mouseLeaveHandler() {
-      this.mouseOver = false;
-      this.mouseDown = false;
+    mouseDownDotHandler() {
+      this.mouseDownDot = true;
+      this.mouseOverDot = true;
     },
-    mouseDownHandler() {
-      this.mouseDown = true;
-      this.mouseOver = true;
+    mouseDownStickHandler() {
+      this.mouseDownStick = true;
+      this.mouseOverStick = true;
     },
     dotHandler(e) {
       e.preventDefault();
-      if (this.canMove) {
+      if (this.canDrag) {
         const left =
           e.clientX -
           this.parentData.parentLeft -
@@ -50,6 +76,40 @@ export default {
           this.$store.getters.height / 2;
         this.$store.commit("setTop", top);
         this.$store.commit("setLeft", left);
+      }
+    },
+    resize(direction, e) {
+      e.preventDefault();
+      if (this.canResize) {
+        if (direction === "bot") {
+          const height =
+            e.clientY - this.parentData.parentTop - this.$store.getters.top;
+          this.$store.commit("setHeight", height);
+        } else if (direction === "right") {
+          const width =
+            e.clientX - this.parentData.parentLeft - this.$store.getters.left;
+          this.$store.commit("setWidth", width);
+        } else if (direction === "top") {
+          const height =
+            this.parentData.parentHeight -
+            (this.parentData.parentHeight -
+              (this.$store.getters.top + this.$store.getters.height)) -
+            e.clientY +
+            this.parentData.parentTop;
+          this.$store.commit("setHeight", height);
+          const top = e.clientY - this.parentData.parentTop;
+          this.$store.commit("setTop", top);
+        } else if (direction === "left") {
+          const width =
+            this.parentData.parentWidth -
+            (this.parentData.parentWidth -
+              (this.$store.getters.left + this.$store.getters.width)) -
+            e.clientX +
+            this.parentData.parentLeft;
+          this.$store.commit("setWidth", width);
+          const left = e.clientX - this.parentData.parentLeft;
+          this.$store.commit("setLeft", left);
+        }
       }
     },
   },
@@ -66,8 +126,14 @@ export default {
     width() {
       return `${this.$store.getters.width}px`;
     },
-    canMove() {
-      if (this.mouseDown && this.mouseOver) {
+    canDrag() {
+      if (this.mouseDownDot && this.mouseOverDot) {
+        return true;
+      }
+      return false;
+    },
+    canResize() {
+      if (this.mouseDownStick && this.mouseOverStick) {
         return true;
       }
       return false;
@@ -75,6 +141,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>
