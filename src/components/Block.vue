@@ -1,15 +1,18 @@
 <template>
-  <div class="block" :style="{ width, height, top, left }">
+  <div
+    class="block"
+    :style="{ width, height, top, left }"
+    @mouseover="mouseOver = true"
+    @mousemove="dotHandler"
+    @mouseleave="mouseLeaveHandler"
+  >
     <span class="block__stick block__stick--top"></span>
     <span class="block__stick block__stick--left"></span>
     <span class="block__stick block__stick--right"></span>
     <span class="block__stick block__stick--bottom"></span>
     <span
       class="block__dot"
-      @mousemove="dotHandler"
       @mousedown="mouseDownHandler"
-      @mouseover="mouseOver = true"
-      @mouseleave="mouseLeaveHandler"
       @mouseup="mouseDown = false"
     ></span>
     {{ mouseOver }} {{ mouseDown }}
