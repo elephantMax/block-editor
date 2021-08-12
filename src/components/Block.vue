@@ -15,7 +15,6 @@
       @mousedown="mouseDownHandler"
       @mouseup="mouseDown = false"
     ></span>
-    {{ mouseOver }} {{ mouseDown }}
   </div>
 </template>
 
@@ -40,7 +39,7 @@ export default {
     },
     dotHandler(e) {
       e.preventDefault();
-      if (this.canResize) {
+      if (this.canMove) {
         const left =
           e.clientX -
           this.parentData.parentLeft -
@@ -67,7 +66,7 @@ export default {
     width() {
       return `${this.$store.getters.width}px`;
     },
-    canResize() {
+    canMove() {
       if (this.mouseDown && this.mouseOver) {
         return true;
       }
