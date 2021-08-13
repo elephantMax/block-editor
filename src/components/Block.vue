@@ -6,34 +6,15 @@
     @mousemove="dotHandler"
   >
     <span
-      class="block__stick block__stick--top"
-      @mousemove.stop="resize('top', $event)"
+      v-for="{ modificator } in sticks"
+      :key="modificator"
+      :class="`block__stick block__stick--${modificator}`"
+      @mousemove.stop="resize(modificator, $event)"
       @mousedown.stop="mouseDownStickHandler"
       @mouseup="mouseDownStick = false"
       @mouseleave="mouseDownStick = false"
     >
     </span>
-    <span
-      class="block__stick block__stick--left"
-      @mousemove.stop="resize('left', $event)"
-      @mousedown.stop="mouseDownStickHandler"
-      @mouseup="mouseDownStick = false"
-      @mouseleave="mouseDownStick = false"
-    ></span>
-    <span
-      class="block__stick block__stick--right"
-      @mousemove.stop="resize('right', $event)"
-      @mousedown.stop="mouseDownStickHandler"
-      @mouseup="mouseDownStick = false"
-      @mouseleave="mouseDownStick = false"
-    ></span>
-    <span
-      class="block__stick block__stick--bottom"
-      @mousemove.stop="resize('bot', $event)"
-      @mousedown.stop="mouseDownStickHandler"
-      @mouseup="mouseDownStick = false"
-      @mouseleave="mouseDownStick = false"
-    ></span>
     <span
       class="block__dot"
       @mousedown="mouseDownDotHandler"
@@ -52,6 +33,12 @@ export default {
       mouseDownDot: false,
       mouseOverStick: false,
       mouseDownStick: false,
+      sticks: [
+        { modificator: "top" },
+        { modificator: "left" },
+        { modificator: "right" },
+        { modificator: "bot" },
+      ],
     };
   },
   methods: {
