@@ -65,51 +65,47 @@ export default {
     },
     dotHandler(e) {
       e.preventDefault();
-      if (this.canDrag) {
-        const left =
-          e.clientX -
-          this.parentData.parentLeft -
-          this.$store.getters.width / 2;
-        const top =
-          e.clientY -
-          this.parentData.parentTop -
-          this.$store.getters.height / 2;
-        this.$store.commit("setTop", top);
-        this.$store.commit("setLeft", left);
-      }
+      if (!this.canDrag) return;
+
+      const left =
+        e.clientX - this.parentData.parentLeft - this.$store.getters.width / 2;
+      const top =
+        e.clientY - this.parentData.parentTop - this.$store.getters.height / 2;
+      this.$store.commit("setTop", top);
+      this.$store.commit("setLeft", left);
     },
     resize(direction, e) {
       e.preventDefault();
-      if (this.canResize) {
-        if (direction === "bot") {
-          const height =
-            e.clientY - this.parentData.parentTop - this.$store.getters.top;
-          this.$store.commit("setHeight", height);
-        } else if (direction === "right") {
-          const width =
-            e.clientX - this.parentData.parentLeft - this.$store.getters.left;
-          this.$store.commit("setWidth", width);
-        } else if (direction === "top") {
-          const height =
-            this.parentData.parentHeight -
-            (this.parentData.parentHeight -
-              (this.$store.getters.top + this.$store.getters.height)) -
-            e.clientY +
-            this.parentData.parentTop;
-          this.$store.commit("setHeight", height);
-          const top = e.clientY - this.parentData.parentTop;
-          this.$store.commit("setTop", top);
-        } else if (direction === "left") {
-          const width =
-            this.parentData.parentWidth -
-            (this.parentData.parentWidth -
-              (this.$store.getters.left + this.$store.getters.width)) -
-            e.clientX +
-            this.parentData.parentLeft;
-          this.$store.commit("setWidth", width);
-          const left = e.clientX - this.parentData.parentLeft;
-          this.$store.commit("setLeft", left);
-        }
+      if (!this.canResize) return;
+
+      if (direction === "bot") {
+        const height =
+          e.clientY - this.parentData.parentTop - this.$store.getters.top;
+        this.$store.commit("setHeight", height);
+      } else if (direction === "right") {
+        const width =
+          e.clientX - this.parentData.parentLeft - this.$store.getters.left;
+        this.$store.commit("setWidth", width);
+      } else if (direction === "top") {
+        const height =
+          this.parentData.parentHeight -
+          (this.parentData.parentHeight -
+            (this.$store.getters.top + this.$store.getters.height)) -
+          e.clientY +
+          this.parentData.parentTop;
+        this.$store.commit("setHeight", height);
+        const top = e.clientY - this.parentData.parentTop;
+        this.$store.commit("setTop", top);
+      } else if (direction === "left") {
+        const width =
+          this.parentData.parentWidth -
+          (this.parentData.parentWidth -
+            (this.$store.getters.left + this.$store.getters.width)) -
+          e.clientX +
+          this.parentData.parentLeft;
+        this.$store.commit("setWidth", width);
+        const left = e.clientX - this.parentData.parentLeft;
+        this.$store.commit("setLeft", left);
       }
     },
   },

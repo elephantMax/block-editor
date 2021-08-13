@@ -16,20 +16,24 @@ export default new Vuex.Store({
   },
   mutations: {
     setTop(state, value) {
-      if(value < 0) return
-      if(value > state.parentHeight - state.height) return
+      if (value < 0) return
+      if (value > state.parentHeight - state.height) return
       state.top = value
     },
     setLeft(state, value) {
-      if(value < 0) return
-      if(value > state.parentWidth - state.width) return
+      if (value < 0) return
+      if (value > state.parentWidth - state.width) return
       state.left = value
     },
     setHeight(state, value) {
-      state.height = value
+      if (state.top + value < state.parentHeight) {
+        state.height = value
+      }
     },
     setWidth(state, value) {
-      state.width = value
+      if (state.left + value < state.parentWidth) {
+        state.width = value
+      }
     },
     setParentTop(state, value) {
       state.parentTop = value
@@ -38,13 +42,13 @@ export default new Vuex.Store({
       state.parentLeft = value
     },
     setParentHeight(state, value) {
-      if(value < state.top) {
+      if (value < state.top) {
         state.top = value - state.width
       }
       state.parentHeight = value
     },
     setParentWidth(state, value) {
-      if(value < state.left) {
+      if (value < state.left) {
         state.left = value - state.width
       }
       state.parentWidth = value
